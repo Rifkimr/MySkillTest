@@ -9,18 +9,16 @@ const Footer = () => {
       <Container>
         <div className="flex flex-col md:flex-row justify-between pt-16 pb-8">
           <FooterList>
-            <h3 className="text-base font-bold mb-2">Shop Categories</h3>
-            <Link href="#">Phone</Link>
-            <Link href="#">Laptop</Link>
-            <Link href="#">Desktop</Link>
-            <Link href="#">Watches</Link>
-            <Link href="#">Tv</Link>
-            <Link href="#">Accessories</Link>
+            <h3 className="text-base font-bold mb-2">Course</h3>
+            <Link href="#">Web Developer</Link>
+            <Link href="#">Fulstack Web Developer</Link>
+            <Link href="#">Frontend Web Developer</Link>
+            <Link href="#">Backend Developer</Link>
+            <Link href="#">Ui/Ue Designer</Link>
           </FooterList>
           <FooterList>
             <h3 className="text-base font-bold mb-2">Customer Service</h3>
             <Link href="#">Contact Us</Link>
-            <Link href="#">Shipping Policy</Link>
             <Link href="#">Return & Exchanges</Link>
             <Link href="#">Watches</Link>
             <Link href="#">FAQs</Link>
@@ -35,15 +33,15 @@ const Footer = () => {
               Repellendus totam nesciunt corporis quo earum?
             </p>
             <p>
-              &copy; {new Date().getFullYear()} Ki-Shop. All right riserved{" "}
+              &copy; {new Date().getFullYear()} MySkill. All right riserved{" "}
             </p>
           </div>
           <FooterList>
             <h3 className="text-base font-bold mb-2">Follow Us</h3>
             <div className="flex gap-2">
               <Link href="#">Facebook</Link>
-              <Link href="#">Facebook</Link>
-              <Link href="#">Facebook</Link>
+              <Link href="#">Instagram</Link>
+              <Link href="#">Linkedin</Link>
             </div>
           </FooterList>
         </div>

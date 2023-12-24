@@ -1,82 +1,70 @@
-'use client'
+import { useState, useRef } from 'react';
+import { Card, CardTitle } from '@/components/ui/card';
+import { Link1Icon } from '@radix-ui/react-icons';
 
-import { getSignature, saveToDatabase } from '@/app/_actions'
-import Image from 'next/image'
-import { useCallback, useEffect, useState } from 'react'
-import { useDropzone } from 'react-dropzone'
-import { Card, CardTitle, } from './ui/card'
-import { Link1Icon } from '@radix-ui/react-icons'
+const Edit = () => {
 
-const Dropzone = ({ setPreviewImage }) => {
-  const [files, setFiles] = useState([])
-  const onDrop = useCallback((acceptedFiles) => {
-    if (acceptedFiles?.length) {
-      setFiles(previousFiles => [
-        ...acceptedFiles.map(file =>
-          Object.assign(file, { preview: URL.createObjectURL(file) })
-        )
-      ])
-      setPreviewImage(URL.createObjectURL(acceptedFiles[0]));
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result); // Menampilkan preview, tidak perlu diubah
+        setProfile(prevProfile => ({
+          ...prevProfile,
+          imagecover: reader.result, // Update imagecover dengan hasil pembacaan gambar
+        }));
+      };
+      reader.readAsDataURL(file);
     }
-  }, [setFiles, setPreviewImage])
+  };
 
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: {
-      'image/*': []
-    },
-    maxSize: 1024 * 1000,
-    maxFiles: 1,
-    onDrop
-  })
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
 
-  useEffect(() => {
-    return () => files.forEach(file => URL.revokeObjectURL(file.preview))
-  }, [files])
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
-  async function action() {
-    const file = files[0]
-    if (!file) return
-
-    const { timestamp, signature } = await getSignature()
-
-    const formData = new FormData()
-
-    formData.append('file', file)
-    formData.append('api_key', process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY)
-    formData.append('signature', signature)
-    formData.append('timestamp', timestamp)
-    formData.append('folder', 'next')
-
-    const endpoint = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_URL
-    const data = await fetch(endpoint, {
-      method: 'POST',
-      body: formData
-    }).then(res => res.json())
-
-    await saveToDatabase({
-      version: data?.version,
-      signature: data?.signature,
-      public_id: data?.public_id
-    })
-  }
+  const handleFileInputClick = () => {
+    fileInputRef.current.click();
+  };
 
   return (
-    <Card className='w-[100%] p-6 '>
-  <CardTitle className="mb-3">Background Cover</CardTitle>
-     <Card {...getRootProps()} className="bg-gray-300 h-[300px] flex justify-center items-center">
-  <form action={action}>
-    <input {...getInputProps({ name: 'file' })} />
-    <div className='flex flex-col items-center justify-center cursor-pointer'>
-    <Link1Icon width={26} height={26} />
-    <h1 className="text-center font-bold text-grey-200 underline">Drag and Drop, or <span className='text-blue-500'>Browse</span> </h1>
-               <p className="text-center text-sm underline text-gray-500 ">Support Format: Png, Jpg, Jpeg</p>
-               <p className="text-center text-sm underline text-gray-500">Max size : 500 Mb</p>
-    </div>
-  </form>
-</Card>
+    <div className='bg-gray-300 h-[300px] flex justify-center items-center'
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+        onClick={handleFileInputClick}
+      >
+        {imagePreview ? (
+          <img src={imagePreview} alt='Preview' className='max-w-full max-h-full' />
+        ) : (
+          <div className='flex flex-col items-center justify-center cursor-pointer'>
+            <Link1Icon width={26} height={26} />
+            <h1 className='text-center font-bold text-grey-200 underline'>
+              Click to Select, or Drag and Drop
+            </h1>
+            <p className='text-center text-sm underline text-gray-500'>Support Format: Png, Jpg, Jpeg</p>
+            <p className='text-center text-sm underline text-gray-500'>Max size: 500 Mb</p>
+            <input
+              type='file'
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+              ref={fileInputRef}
+            />
+          </div>
+        )}
+      </div>
+  );
+};
 
-    </Card>
-  )
-}
-
-export default Dropzone
+export default Edit;

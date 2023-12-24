@@ -8,7 +8,7 @@ import { motion } from "framer-motion"
 const links = [
     { path: '/', name: 'Home' },
     { path: '/project', name: 'my project' },
-    { path: '/edit', name: 'Profile' },
+    { path: '/profile', name: 'Profile' },
 ]
 
 const Nav = ({containerStyles, linkStyles, underlineStyles}) => {

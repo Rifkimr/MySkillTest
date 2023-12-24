@@ -1,91 +1,170 @@
 'use client' 
 import { Button } from "@/components/ui/button"
 import { PlusIcon } from "@radix-ui/react-icons"
-import Dropzone from "@/components/Dropzone"
-import EditProfile from "@/components/EditProfile"
-import EditPortofolio from "@/components/EditPortofolio"
-import { useState } from 'react'
+import { useEffect} from 'react'
+import { Link1Icon } from '@radix-ui/react-icons';
 import {
   Card,
+  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import {
   Avatar,
-  AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar"
 import Link from "next/link"
+import CardPortofolio from "@/components/cards/CardPortofolio"
+import UseHandler from "@/utils/handlers";
+import React, { useRef } from 'react';
+
 
 const Edit = () => {
-  const [previewImage, setPreviewImage] = useState(null);
+  const inputRef = useRef(null);
+  const handleAddPortfolio = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+  const { 
+    handleCardClick,
+    handleSubmit,
+    handleChange,
+    handlePortfolioChange,
+    addPortfolio,
+    handleFileChange,
+    handleDragOver,
+    handleDrop,
+    handleFileInputClick,
+    handleDeleteCard,
+    previewPortfolio,
+    imagePreview,
+    fileInputRef,
+    editIndex,
+    profile,
+    isLoading,
+    fetchData
+  } = UseHandler();
+
+
+  useEffect(() => {
+    fetchData()
+  },[])
+
   return (
-    <section className="bg-gray-100">
-    <div className="container">
-     <div className="flex gap-3 py-4">
-     <Link href={'/create'} >
-      <Button variant="outline" className='mb-3 text-green-500 border-green-500 '><PlusIcon className="mr-2" />  Add Portofolio</Button>
-     </Link>
-      <Button className='bg-slate-300 text-gray-700'>Simpan Perubahan</Button>
-     </div>
-      <div className="grid grid-cols-5 gap-8">
+    <div className="container p-3 ">
+      <div className="flex gap-3 py-4">
+      <Button variant="outline" className='mb-3 text-green-500 border-green-500 ' onClick={handleAddPortfolio}><PlusIcon className="mr-2" />  Tambah Portofolio</Button>
+     <Button onClick={handleSubmit} disabled={isLoading}>
+      {isLoading ? 'Memproses...' : 'Simpan Perubahan'}
+    </Button>
+      </div>
+      <div className="sm:grid-rows-2 sm:p[20px] xl:grid grid-cols-5 gap-8">
         <div className="col-span-3 justify-center w-[100%]">
               <div className="w-[100%]  flex flex-col gap-y-6">
-                <Dropzone setPreviewImage={setPreviewImage} />
-                <Dropzone/>
-                <EditProfile/>
-                <EditPortofolio/>
-              </div>
+                <Card className='w-[100%] p-6'>
+      <CardTitle className='mb-3'>Background Cover</CardTitle>
+      <div className='bg-gray-300 h-[300px] flex justify-center items-center'
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+        onClick={handleFileInputClick}
+      >
+        {imagePreview ? (
+          <img src={imagePreview} alt='Preview' className='max-w-full max-h-full' />
+        ) : (
+          <div className='flex flex-col items-center justify-center cursor-pointer'>
+            <Link1Icon width={26} height={26} />
+            <h1 className='text-center font-bold text-grey-200 underline'>
+              Click to Select, or Drag and Drop
+            </h1>
+            <p className='text-center text-sm underline text-gray-500'>Support Format: Png, Jpg, Jpeg</p>
+            <p className='text-center text-sm underline text-gray-500'>Max size: 500 Mb</p>
+            <input
+              type='file'
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+              ref={fileInputRef}
+            />
+          </div>
+        )}
+      </div>
+    </Card>
+        <div>
+        <Card className="w-[100%] ">
+      <CardHeader>
+        <CardTitle>Profil</CardTitle>
+      </CardHeader>
+
+      <CardContent>
+           <form onSubmit={handleSubmit}>
+            <div className="grid w-full items-center gap-4">
+              <Input id="name" placeholder="Nama" value={profile.name} onChange={handleChange} />
+              <Input id="title" placeholder="Title/posisi" value={profile.title} onChange={handleChange} />
+              <Textarea placeholder="Deskripsi" id="description" value={profile.description} onChange={handleChange} />
+            </div>
+          </form>
+      </CardContent>
+    </Card>
+
+    <Card className="mt-5" >
+      <CardHeader>
+        <CardTitle>Add Portofolio</CardTitle>
+      </CardHeader>
+      <CardContent>
+           <div className="grid w-full items-center gap-4">
+                  <Input ref={inputRef} id="posisi" placeholder="Posisi" onChange={handlePortfolioChange} defaultValue={editIndex !== null ? previewPortfolio.posisi : ''} />
+                  <Input id="perusahaan" placeholder="Perusahaan" onChange={handlePortfolioChange} defaultValue={editIndex !== null ? previewPortfolio.perusahaan : ''} />
+                  <div className="flex justify-between gap-2">
+                  <Input type="date" id="postAt" onChange={handlePortfolioChange} defaultValue={editIndex !== null ? previewPortfolio.postAt : ''} />
+                  <Input type="date" id="endDate" onChange={handlePortfolioChange} defaultValue={editIndex !== null ? previewPortfolio.endDate : ''} />
+                  </div>
+                  <Textarea placeholder="Deskripsi" id="description" onChange={handlePortfolioChange} defaultValue={editIndex !== null ? previewPortfolio.description : ''} />
+                </div>
+                <Button className="mt-4" onClick={addPortfolio}>{editIndex !== null ? 'Update Portofolio' : 'Tambah Portofolio'}</Button>
+      </CardContent>
+      </Card>
+        </div>
+        </div>
         </div>
         <div className="col-span-2  w-[100%]">
-          <div>
-            <Card className=" relative h-[100vh] flex flex-col">
+          <div >
+            <Card className=" relative h-full flex flex-col">
               <div className="w-full h-40 rounded-t-lg">
-                  {previewImage ? (
-                  <img className="w-full h-full object-cover rounded-t-lg" src={previewImage} alt="Preview" />
-                  ) : (
-                  <img className="w-full h-full object-cover rounded-t-lg" src="https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0=" alt="Placeholder" />
-                  )}
+                  <img className="w-full h-full object-cover rounded-t-lg" src={imagePreview || profile.imagecover || 'placeholder-url'} alt="Placeholder" />
               </div>
-
               <div className="relative -mt-20 flex items-center justify-center">
-               <Avatar className="w-24 h-24">
-               <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-               </Avatar>
+                <Avatar className="w-24 h-24">
+                <AvatarImage src={profile.avatar} alt="@shadcn" />
+                </Avatar>
               </div>
-            <div className="flex flex-col items-center justify-center">
-              <div className="w-[70%] flex mt-3">
-                <div>
-                <CardTitle className="text-center">Rifki Muhamad Ramdan</CardTitle>
-                <h1 className="text-center font-bold text-grey-200">Title</h1>
-               <CardDescription className="text-center">Saya adalah model bahasa buatan yang dikembangkan oleh OpenAI. Saya diciptakan untuk membantu dalam berbagai tugas</CardDescription>
+            <div className="flex flex-col items-center justify-center ">
+                <div className="w-[100%] mt-5">
+                <CardTitle className="text-center"> {profile.name} </CardTitle>
+                <h1 className="text-center font-bold text-grey-200"> {profile.title} </h1>
+                <CardDescription className="text-center"> {profile.description} </CardDescription>
                 </div>
-              </div>
-               <CardTitle>Portofolio</CardTitle>
-              <div className="w-[80%] mt-3 transition cursor-pointer
-    hover:scale-105">
-              <Card className="p-4 mt-5">
-                  <p className="text-large font-medium leading-none">
-              Fronten Web Developer
-            </p>
-            <p className="text-sm font-medium text-muted-foreground">
-              MySkill
-            </p>
-            <p className="text-sm  text-muted-foreground my-3">
-              January 2023 - Agustus 2024
-            </p>
-                 <CardDescription className="text-black" >Deploy your new project in one-click. dalam berbagai tugas, mulai dari membe, hingga mendukung dalam proses pembelajaran dan eksplorasi konsep-konsep baru.</CardDescription>
-              </Card>
-              </div>
+            </div>
+            <div className="flex-col mt-5 gap-y-3 flex px-3 ">
+              <CardTitle className="text-center" >Portofolio</CardTitle>
+              {profile.portfolio &&
+          profile.portfolio.map((item, index) => (
+            <CardPortofolio
+              key={index}
+              item={item}
+              index={index}
+              handleCardClick={handleCardClick}
+              handleDeleteCard={handleDeleteCard}
+            />
+          ))}
             </div>
             </Card>
           </div>
         </div>
       </div>
     </div>
-    </section>
   )
 }
 
