@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Hi dear👋,i'm Rifki Muhamad ramdan
 
-## Getting Started
+Disini saya mengerjakan test Assignment Frontend Web Developer dari Pt.MySkill.id dan saya sangat senang dan antusias dalam perjalanan proyek ini. Proses kreatif dan penuh tantangan ini adalah kesempatan sempurna bagi saya untuk memperluas keterampilan dalam pengembangan aplikasi web yang inovatif.
 
-First, run the development server:
+Saya berharap bahwa proyek ini akan menjadi jendela baru bagi pengetahuan dan pengalaman saya, membantu saya melangkah lebih jauh dalam dunia pengembangan web yang dinamis ini.
 
-```bash
+Terima kasih telah memberikan kesempatan ini, dan saya tak sabar untuk melihat seberapa jauh saya bisa menjelajahi kreativitas dan inovasi.
+
+## Installation end Run the server
+
+Install the dependencies and devDependencies and start the server.
+
+```sh
+npm i
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Menambahakan Card Portofolio
+- Update Profile
+- Update PortoFolio
+- Delete PortoFolio
+- Update Avatar image dan background Profile
+- Drag and drop markdown and HTML files into Dillinger
 
-## Learn More
+## Tech
 
-To learn more about Next.js, take a look at the following resources:
+- Bahasa pemograman [Javascript] 
+- Dengan menggunakan Framwor [NextJs]
+- Styling menggunakan [TailwindCss]
+- Component library [Shadac/ui]
+- Dami data [mockApi]
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
